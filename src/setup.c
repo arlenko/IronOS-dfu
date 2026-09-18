@@ -14,20 +14,29 @@ void _full_system_reset() {
 int force_dfu_gpio(void) {
   rcc_gpio_enable(GPIO_DFU_BOOT_PORT);
   gpio_set_input_pp(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#ifdef GPIO_DFU_BOOT_ACTIVE_HIGH
+  gpio_clear(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#else
   gpio_set(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#endif
   for (unsigned int i = 0; i < 512; i++)
     __asm__("nop");
   uint16_t val = gpio_read(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
   gpio_set_input(GPIO_DFU_BOOT_PORT, GPIO_DFU_BOOT_PIN);
+#ifdef GPIO_DFU_BOOT_ACTIVE_HIGH
+  return val != 0;
+#else
   return val == 0;
+#endif
 }
 #else
 int force_dfu_gpio(void) { return 1; }
 #endif
 
 void gpio_set_mode(uint32_t gpiodev, uint16_t gpion, uint8_t mode) {
-  if (gpion < 8)
+  if (gpion < 8) {
     GPIO_CRL(gpiodev) = (GPIO_CRL(gpiodev) & ~(0xf << ((gpion) << 2))) | (mode << ((gpion) << 2));
-  else
-    GPIO_CRH(gpiodev) = (GPIO_CRL(gpiodev) & ~(0xf << ((gpion - 8) << 2))) | (mode << ((gpion - 8) << 2));
+  } else {
+    GPIO_CRH(gpiodev) = (GPIO_CRH(gpiodev) & ~(0xf << ((gpion - 8) << 2))) | (mode << ((gpion - 8) << 2));
+  }
 }

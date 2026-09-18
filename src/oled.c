@@ -55,10 +55,12 @@ const uint8_t REFRESH_COMMANDS[] = {
     OLED_GRAM_END,   // End
 #ifdef OLED_INVERT_SCAN
     // Set COM output scan direction (reverse mode, COM[N-1] to COM0)
-    0x80, 0xC8,
+    0x80,
+    0xC8,
 #else
     // Set COM output scan direction (normal mode, COM0 to COM[N-1])
-    0x80, 0xC0,
+    0x80,
+    0xC0,
 #endif
     // Set page address:
     //  A[2:0] - Page start address = 0
@@ -80,7 +82,11 @@ void oled_init(void) {
   rcc_gpio_enable(OLED_RESET_GPIO_Port);
   gpio_set_output(OLED_RESET_GPIO_Port, OLED_RESET_Pin);
   gpio_clear(OLED_RESET_GPIO_Port, OLED_RESET_Pin);
-  // Delay a few ms
+// Delay a few ms
+#else
+  for (uint32_t xx = 0; xx < (100 * 10000UL); xx++) {
+    __asm__("nop");
+  }
 #endif
 #ifdef ENABLE_WATCHDOG
   iwdg_reset();

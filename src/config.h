@@ -89,6 +89,17 @@
 #define FLASH_SIZE_KB                 128
 #define FLASH_BOOTLDR_SIZE_KB         32
 #define FLASH_BOOTLDR_PAYLOAD_SIZE_KB 96
+#elif MODEL_GEM
+#define GPIO_DFU_BOOT_PORT GPIOB
+#define GPIO_DFU_BOOT_PIN  9
+#define GPIO_DFU_BOOT_ACTIVE_HIGH
+#define SCL_Pin                       11
+#define SCL_GPIO_Port                 GPIOB
+#define SDA_Pin                       10
+#define SDA_GPIO_Port                 GPIOB
+#define FLASH_SIZE_KB                 64
+#define FLASH_BOOTLDR_SIZE_KB         16
+#define FLASH_BOOTLDR_PAYLOAD_SIZE_KB 48
 
 #else
 #error model not defined, use model= on makefile path
@@ -112,7 +123,7 @@
 #else
 #define BOOTLOADER_MODE
 #define DFU_VALID_FLASH_START (FLASH_BASE_ADDR + (FLASH_BOOTLDR_SIZE_KB * 1024))
-#define DFU_VALID_FLASH_END   (FLASH_BASE_ADDR + (FLASH_BOOTLDR_PAYLOAD_SIZE_KB * 1024))
+#define DFU_VALID_FLASH_END   (FLASH_BASE_ADDR + ((FLASH_BOOTLDR_SIZE_KB + FLASH_BOOTLDR_PAYLOAD_SIZE_KB) * 1024))
 // In DFU mode, we use button to enter
 
 #define ENABLE_GPIO_DFU_BOOT

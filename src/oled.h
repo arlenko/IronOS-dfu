@@ -20,6 +20,15 @@
 #else
 #define OLED_SEGMENT_MAP 0xA1
 #endif
+#elif MODEL_GEM
+#define OLED_AREA_X      16
+#define OLED_AREA_Y      8
+#define OLED_WIDTH       128
+#define OLED_HEIGHT      32
+#define OLED_GRAM_START  0x00
+#define OLED_GRAM_END    0x7F
+#define OLED_VCOM_LAYOUT 0x02
+#define OLED_SEGMENT_MAP 0xA0
 #else
 
 #define OLED_AREA_X      0

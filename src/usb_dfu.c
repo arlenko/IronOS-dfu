@@ -24,7 +24,7 @@ char serial_no[25];
 
 #define STR_HELPER(x) #x
 #define STR(x)        STR_HELPER(x)
-const char *const _usb_strings[5] = {"RalimTek <3 libopencm3",       // iManufacturer
+const char *const _usb_strings[5] = {"RalimTek IronOS",       // iManufacturer
                                      "DFU bootloader [" VERSION "]", // iProduct
                                      serial_no,                      // iSerialNumber
 // Interface desc string
@@ -47,7 +47,7 @@ const char *const _usb_strings[5] = {"RalimTek <3 libopencm3",       // iManufac
 #endif
 };
 
-static const char hcharset[16] = "0123456789abcdef";
+static const char hcharset[] = "0123456789abcdef";
 void              get_dev_unique_id(char *s) {
   volatile uint8_t *unique_id = (volatile uint8_t *)0x1FFFF7E8;
   /* Fetch serial number from chip's unique ID */

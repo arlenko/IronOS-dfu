@@ -1,4 +1,4 @@
-GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
+GIT_VERSION := $(shell git describe --abbrev=8 --always --tags)
 
 build_type ?= runtime
 model ?= unknown
@@ -24,7 +24,7 @@ ifeq ($(build_type), runtime)
 		VECTOR_TABLE_OFFSET := 0x8000
 		SRC_LD = src/stm32f103_32k_runtime.ld
 	endif
-	ifeq ($(model),$(filter $(model), TS100 TS80 TS80P ))
+	ifeq ($(model),$(filter $(model), TS100 TS80 TS80P GEM ))
 		VECTOR_TABLE_OFFSET := 0x4000
 		SRC_LD = src/stm32f103_runtime.ld
 	endif
