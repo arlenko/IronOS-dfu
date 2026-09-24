@@ -98,8 +98,8 @@
 #define SDA_Pin                       10
 #define SDA_GPIO_Port                 GPIOB
 #define FLASH_SIZE_KB                 64
-#define FLASH_BOOTLDR_SIZE_KB         16
-#define FLASH_BOOTLDR_PAYLOAD_SIZE_KB 48
+#define FLASH_BOOTLDR_SIZE_KB         8
+#define FLASH_BOOTLDR_PAYLOAD_SIZE_KB 56
 
 #else
 #error model not defined, use model= on makefile path

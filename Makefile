@@ -28,6 +28,10 @@ ifeq ($(build_type), runtime)
 		VECTOR_TABLE_OFFSET := 0x4000
 		SRC_LD = src/stm32f103_runtime.ld
 	endif
+	ifeq ($(model),GEM )
+		VECTOR_TABLE_OFFSET := 0x2000
+		SRC_LD = src/stm32f103_runtime_8k.ld
+	endif
 	
 BIN = runtime
 
