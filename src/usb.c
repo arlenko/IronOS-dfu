@@ -6,7 +6,7 @@
 #include <string.h>
 
 // Defined in main
-extern uint8_t usbd_control_buffer[1024];
+extern uint8_t usbd_control_buffer[DFU_TRANSFER_SIZE];
 extern const char *const _usb_strings[5];
 extern enum usbd_request_return_codes
 usbdfu_control_request(struct usb_setup_data *req, uint16_t *len,

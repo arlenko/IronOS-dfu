@@ -483,7 +483,7 @@ enum usb_language_id {
   USB_CLR_EP_NTOGGLE_BIT_AND_SET(EP, USB_EP_TX_CTR, USB_EP_RX_CTR)
 
 // Exported API
-#define DFU_TRANSFER_SIZE 1024
+#define DFU_TRANSFER_SIZE 2048
 void usb_init(void);
 void do_usb_poll(void);
 #endif

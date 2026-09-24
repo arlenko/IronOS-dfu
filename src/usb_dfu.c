@@ -24,7 +24,7 @@ char serial_no[25];
 
 #define STR_HELPER(x) #x
 #define STR(x)        STR_HELPER(x)
-const char *const _usb_strings[5] = {"RalimTek IronOS",       // iManufacturer
+const char *const _usb_strings[5] = {"RalimTek IronOS",              // iManufacturer
                                      "DFU bootloader [" VERSION "]", // iProduct
                                      serial_no,                      // iSerialNumber
 // Interface desc string
@@ -87,12 +87,13 @@ static void usbdfu_getstatus_complete(struct usb_setup_data *req) {
     if (prog.blocknum == 0) {
       switch (prog.buf[0]) {
       case CMD_ERASE: {
-
-        // Clear this page here.
         uint32_t baseaddr = *(uint32_t *)(prog.buf + 1);
         if (baseaddr >= start_addr && baseaddr + DFU_TRANSFER_SIZE <= end_addr) {
-          if (!_flash_page_is_erased(baseaddr))
-            _flash_erase_page(baseaddr);
+          // Clear every page within the transfer window.
+          for (uint32_t page = baseaddr; page < baseaddr + DFU_TRANSFER_SIZE; page += FLASH_PAGE_SIZE) {
+            if (!_flash_page_is_erased(page))
+              _flash_erase_page(page);
+          }
         }
       } break;
       case CMD_SETADDR:
@@ -106,9 +107,11 @@ static void usbdfu_getstatus_complete(struct usb_setup_data *req) {
       uint32_t baseaddr = prog.addr + ((prog.blocknum - 2) * DFU_TRANSFER_SIZE);
 
       if (baseaddr >= start_addr && baseaddr + prog.len <= end_addr) {
-        // Program buffer in one go after erasing.
-        if (!_flash_page_is_erased(baseaddr))
-          _flash_erase_page(baseaddr);
+        // Erase every 1K page this chunk touches, then program it in one go.
+        for (uint32_t page = baseaddr; page < baseaddr + prog.len; page += FLASH_PAGE_SIZE) {
+          if (!_flash_page_is_erased(page))
+            _flash_erase_page(page);
+        }
         _flash_program_buffer(baseaddr, (uint16_t *)prog.buf, prog.len);
       }
     }
