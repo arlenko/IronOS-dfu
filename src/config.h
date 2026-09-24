@@ -100,6 +100,8 @@
 #define FLASH_SIZE_KB                 64
 #define FLASH_BOOTLDR_SIZE_KB         8
 #define FLASH_BOOTLDR_PAYLOAD_SIZE_KB 56
+#define OLED_INVERT_SCAN
+#define OLED_FLIP_BUFFER
 
 #else
 #error model not defined, use model= on makefile path
